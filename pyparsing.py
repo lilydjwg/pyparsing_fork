@@ -3084,7 +3084,8 @@ def oneOf( strs, caseless=False, useRegex=True ):
        but returns a C{L{MatchFirst}} for best performance.
 
        Parameters:
-        - strs - a string of space-delimited literals, or a list of string literals
+        - strs - a string of space-delimited literals, or a literable
+          producing string literals
         - caseless - (default=False) - treat all literals as caseless
         - useRegex - (default=True) - as an optimization, will generate a Regex
           object; otherwise, will generate a C{MatchFirst} object (if C{caseless=True}, or
@@ -3099,13 +3100,10 @@ def oneOf( strs, caseless=False, useRegex=True ):
         masks = ( lambda a,b: b.startswith(a) )
         parseElementClass = Literal
 
-    if isinstance(strs,(list,tuple)):
-        symbols = list(strs[:])
-    elif isinstance(strs,basestring):
+    if isinstance(strs,basestring):
         symbols = strs.split()
     else:
-        warnings.warn("Invalid argument to oneOf, expected string or list",
-                SyntaxWarning, stacklevel=2)
+        symbols = list(strs)
 
     i = 0
     while i < len(symbols)-1:
