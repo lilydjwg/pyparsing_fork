@@ -445,6 +445,17 @@ class ParseResults(object):
         """Returns the parse results as XML. Tags are created for tokens and lists that have defined results names."""
         nl = "\n"
         out = []
+        # FIXME: named items may have same position, e.g.
+        #
+        # from pyparsing import *
+        # 
+        # word = Word(alphas).setResultsName('word')
+        # 
+        # f = Forward().setResultsName('forward')
+        # f << word + Optional(f)
+        # r = f.parseString('abc def')
+        # 
+        # print(r.asXML()) # inner tag name is randomly forward or word
         namedItems = dict((v[1],k) for (k,vlist) in self.__tokdict.items()
                                                             for v in vlist)
         nextLevelIndent = indent + "  "
