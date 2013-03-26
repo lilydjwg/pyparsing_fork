@@ -661,18 +661,18 @@ class ParserElement(object):
     DEFAULT_WHITE_CHARS = " \n\t\r"
     verbose_stacktrace = False
 
+    @staticmethod
     def setDefaultWhitespaceChars( chars ):
         """Overrides the default whitespace chars
         """
         ParserElement.DEFAULT_WHITE_CHARS = chars
-    setDefaultWhitespaceChars = staticmethod(setDefaultWhitespaceChars)
 
+    @staticmethod
     def inlineLiteralsUsing(cls):
         """
         Set class to be used for inclusion of string literals into a parser.
         """
         ParserElement.literalStringClass = cls
-    inlineLiteralsUsing = staticmethod(inlineLiteralsUsing)
 
     def __init__( self, savelist=False ):
         self.parseAction = list()
@@ -925,11 +925,12 @@ class ParserElement(object):
 
     # argument cache for optimizing repeated calls when backtracking through recursive expressions
     _exprArgCache = {}
+    @staticmethod
     def resetCache():
         ParserElement._exprArgCache.clear()
-    resetCache = staticmethod(resetCache)
 
     _packratEnabled = False
+    @staticmethod
     def enablePackrat():
         """Enables "packrat" parsing, which adds memoizing to the parsing logic.
            Repeated parse attempts at the same string location (which happens
@@ -949,7 +950,6 @@ class ParserElement(object):
         if not ParserElement._packratEnabled:
             ParserElement._packratEnabled = True
             ParserElement._parse = ParserElement._parseCache
-    enablePackrat = staticmethod(enablePackrat)
 
     def parseString( self, instring, parseAll=False ):
         """Execute the parse expression with the given string.
@@ -1512,11 +1512,11 @@ class Keyword(Token):
         c.identChars = Keyword.DEFAULT_KEYWORD_CHARS
         return c
 
+    @staticmethod
     def setDefaultKeywordChars( chars ):
         """Overrides the default Keyword chars
         """
         Keyword.DEFAULT_KEYWORD_CHARS = chars
-    setDefaultKeywordChars = staticmethod(setDefaultKeywordChars)
 
 class CaselessLiteral(Literal):
     """Token to match a specified string, ignoring case of letters.
