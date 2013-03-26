@@ -70,6 +70,7 @@ import warnings
 import re
 import sre_constants
 import collections
+import types
 #~ sys.stderr.write( "testing pyparsing module, version %s, %s\n" % (__version__,__versionTime__ ) )
 
 __all__ = [
@@ -634,6 +635,11 @@ def nullDebugAction(*args):
 def _trim_arity(func, maxargs=3):
     if func in singleArgBuiltins:
         return lambda s,l,t: func(t)
+
+    if isinstance(func, types.FunctionType):
+        limit = maxargs - func.__code__.co_argcount
+        return lambda *args: func(*args[limit:])
+
     limit = 0
     foundArity = False
     def wrapper(*args):
@@ -649,7 +655,7 @@ def _trim_arity(func, maxargs=3):
                 limit += 1
                 continue
     return wrapper
-    
+
 class ParserElement(object):
     """Abstract base level parser element class."""
     DEFAULT_WHITE_CHARS = " \n\t\r"
